@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Feliz Cumpleaños — Para mi hermana</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#060b23;
+      --bg2:#1c1f40;
+      --accent:#ffb6c1;
+      --accent2:#b3e5fc;
+      --text:#fdfdff;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:Poppins,sans-serif;
+      background:linear-gradient(135deg,var(--bg1),var(--bg2));
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--text);
+      overflow:hidden;
+    }
+    h1{
+      font-family:Playfair Display,serif;
+      font-size:3rem;
+      background:linear-gradient(90deg,var(--accent),var(--accent2));
+      -webkit-background-clip:text;
+      color:transparent;
+      animation:glow 3s ease-in-out infinite alternate;
+    }
+    @keyframes glow{
+      from{text-shadow:0 0 10px rgba(255,255,255,0.3)}
+      to{text-shadow:0 0 25px rgba(255,255,255,0.8)}
+    }
+    .card{
+      text-align:center;
+      padding:50px 40px;
+      background:rgba(255,255,255,0.06);
+      border-radius:25px;
+      backdrop-filter:blur(14px);
+      box-shadow:0 10px 40px rgba(0,0,0,0.6);
+      width:min(90%,700px);
+      position:relative;
+      overflow:hidden;
+    }
+    .card::before{
+      content:'';
+      position:absolute;
+      top:-50%;
+      left:-50%;
+      width:200%;
+      height:200%;
+      background:conic-gradient(from 0deg,var(--accent),var(--accent2),var(--accent));
+      animation:spin 12s linear infinite;
+      opacity:0.15;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .inner{position:relative;z-index:1;}
+    p{
+      font-size:1.1rem;
+      max-width:550px;
+      margin:20px auto;
+      line-height:1.6;
+    }
+    button{
+      margin-top:25px;
+      background:linear-gradient(90deg,var(--accent),var(--accent2));
+      color:#021;
+      font-weight:600;
+      border:none;
+      border-radius:30px;
+      padding:12px 32px;
+      cursor:pointer;
+      transition:transform .25s,box-shadow .25s;
+    }
+    button:hover{
+      transform:scale(1.07);
+      box-shadow:0 0 20px rgba(255,255,255,0.4);
+    }
+    .modal{
+      position:fixed;inset:0;
+      display:grid;place-items:center;
+      background:rgba(0,0,0,0.7);
+      backdrop-filter:blur(8px);
+      visibility:hidden;opacity:0;
+      transition:.4s;
+    }
+    .modal.show{visibility:visible;opacity:1;}
+    .modal-content{
+      background:linear-gradient(145deg,#fff,#f4f4ff);
+      color:#111;
+      padding:30px;
+      border-radius:18px;
+      max-width:480px;
+      text-align:center;
+      box-shadow:0 20px 60px rgba(0,0,0,0.6);
+      animation:scaleIn .4s ease;
+    }
+    @keyframes scaleIn{0%{transform:scale(0.7)}100%{transform:scale(1)}}
+    .confetti{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden;z-index:10}
+    .confetti span{position:absolute;width:10px;height:10px;opacity:.8;animation:fall 5s linear infinite}
+    @keyframes fall{0%{transform:translateY(-10vh) rotate(0deg)}100%{transform:translateY(110vh) rotate(720deg)}}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="inner">
+      <h1>💖 Feliz cumpleaños, hermana 💖</h1>
+      <p>Que la vida te llene de calma, inspiración y amor. Hoy celebramos tu luz, tu fuerza y todo lo que haces especial este mundo.</p>
+      <button id="btnSorpresa">Ver sorpresa</button>
+      <div class="confetti" id="confetti"></div>
+    </div>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <h2>🌷 Con todo mi cariño 🌷</h2>
+      <p style="margin-top:10px">Eres la melodía que alegra mis días. Gracias por tu bondad, por tu sonrisa y por hacer de cada momento algo único.</p>
+      <button style="margin-top:20px;padding:8px 18px;border:none;border-radius:10px;background:#222;color:#fff;cursor:pointer" id="closeModal">Cerrar</button>
+    </div>
+  </div>
+
+  <audio id="music" autoplay loop>
+    <source src="https://cdn.pixabay.com/audio/2022/10/18/audio_bcaef4cf0a.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const btn=document.getElementById('btnSorpresa');
+    const modal=document.getElementById('modal');
+    const closeModal=document.getElementById('closeModal');
+    const confetti=document.getElementById('confetti');
+
+    btn.onclick=()=>{modal.classList.add('show');launchConfetti();};
+    closeModal.onclick=()=>modal.classList.remove('show');
+
+    function launchConfetti(){
+      confetti.innerHTML='';
+      const colors=['#ffb6c1','#b3e5fc','#ffd27f','#c8ffcb','#d5bfff'];
+      for(let i=0;i<100;i++){
+        const span=document.createElement('span');
+        span.style.background=colors[Math.floor(Math.random()*colors.length)];
+        span.style.left=Math.random()*100+'%';
+        span.style.animationDelay=Math.random()*5+'s';
+        span.style.width=6+Math.random()*8+'px';
+        span.style.height=6+Math.random()*8+'px';
+        confetti.appendChild(span);
+      }
+    }
+
+    window.addEventListener('load',()=>{
+      const audio=document.getElementById('music');
+      audio.volume=0.6;
+      const playPromise=audio.play();
+      if(playPromise!==undefined){
+        playPromise.catch(()=>{
+          document.body.addEventListener('click',()=>{audio.play();},{once:true});
+        });
+      }
+    });
+  </script>
+</body>
+</html>
